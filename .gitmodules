@@ -1,0 +1,8 @@
+[submodule "gui-website"]
+	path = gui-website
+	url = git@github.com:vdbe/gui-website.git
+	branch = main
+[submodule "gui-api"]
+	path = gui-api
+	url = git@github.com:vdbe/gui-api.git
+	branch = main
