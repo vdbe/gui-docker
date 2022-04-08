@@ -4,7 +4,6 @@ services:
   website:
     image: ghcr.io/vdbe/gui-website:latest
     container_name: 'gui-website'
-    restart: 'on-failure'
     networks:
       - frontend
     ports:
@@ -17,7 +16,6 @@ services:
   api:
     image: ghcr.io/vdbe/gui-api:latest
     container_name: 'gui-api'
-    restart: 'on-failure'
     environment:
       DATABASE_URL: postgres://postgres:toor123@db:5432/postgres
       JWT_SECRET: 'toor123'
@@ -30,14 +28,21 @@ services:
     links:
       - db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: postgres
     container_name: 'gui-db'
-    restart: 'on-failure'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_PASSWORD: toor123
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
     networks:
       - backend
     volumes:
