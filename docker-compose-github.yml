@@ -2,7 +2,7 @@ version: "3"
 
 services:
   website:
-    image: ewoutvdb/gui-website
+    image: ghcr.io/vdbe/gui-website:latest
     container_name: 'gui-website'
     networks:
       - frontend
@@ -14,14 +14,14 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
   api:
-    image: ewoutvdb/gui-api
+    image: ghcr.io/vdbe/gui-api:latest
     container_name: 'gui-api'
     environment:
       DATABASE_URL: postgres://postgres:toor123@db:5432/postgres
       JWT_SECRET: 'toor123'
       HOST: '::'
       PORT: 80
-      RUST_LOG: 'axum_jwt_login=info,server=info,sqlx::query=error,tower_http=info,info'
+      RUST_LOG: 'axum_jwt_login=debug,server=debug,sqlx::query=error,tower_http=debug,info'
     networks:
       - frontend
       - backend
